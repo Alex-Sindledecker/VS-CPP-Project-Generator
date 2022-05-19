@@ -1,4 +1,5 @@
 ﻿using System;
+using VS_CPP_Project_Generator.Logging;
 
 namespace VS_CPP_Project_Generator
 {
@@ -6,7 +7,8 @@ namespace VS_CPP_Project_Generator
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            ILogger logger = new ConsoleLogger();
+            logger.WriteLine("Hello World!");
         }
     }
 }
