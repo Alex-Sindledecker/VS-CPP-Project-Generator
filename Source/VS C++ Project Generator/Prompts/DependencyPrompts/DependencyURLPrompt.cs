@@ -6,7 +6,7 @@ using VS_CPP_Project_Generator.Models;
 
 namespace VS_CPP_Project_Generator.Prompts
 {
-    class DependencyURLPrompt : IDependencyPrompt
+    public class DependencyURLPrompt : IDependencyPrompt
     {
         private string _url;
 

@@ -16,7 +16,7 @@ namespace VS_CPP_Project_Generator
             bool test4 = dependencyURLPrompt.Validate("https://www.w3schools.com/cs/cs_user_input.php");
             bool test5 = dependencyURLPrompt.Validate("https://github.com/SFML/SFML/releases/download/2.5.1/SFML-2.5.1-windows-vc15-64-bit.zip");
 
-            //ProjectModel model = GetProjectModel();
+            ProjectModel model = GetProjectModel();
         }
 
         static ProjectModel GetProjectModel()
