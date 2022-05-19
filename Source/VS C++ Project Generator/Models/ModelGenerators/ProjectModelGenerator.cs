@@ -5,50 +5,31 @@ using VS_CPP_Project_Generator.Prompts;
 
 namespace VS_CPP_Project_Generator.Models.ModelGenerators
 {
-    class ProjectModelGenerator
+    public class ProjectModelGenerator
     {
-        private List<IPrompt> _prompts;
-        private ProjectModel _projectModel;
+        private List<IProjectPrompt> _prompts;
 
         public ProjectModelGenerator()
         {
-            _prompts = new List<IPrompt>();
-            _projectModel = new ProjectModel();
+            _prompts = new List<IProjectPrompt>();
         }
 
-        public ProjectModel Model
-        {
-            get
-            {
-                return _projectModel;
-            }
-        }
-
-        public void AddPrompt(IPrompt prompt)
+        public void AddPrompt(IProjectPrompt prompt)
         {
             _prompts.Add(prompt);
         }
 
-        public void RunPrompts()
+        public ProjectModel RunPrompts()
         {
-            foreach (IPrompt prompt in _prompts)
-            {
-                RunPrompt(prompt);
-                prompt.Populate(_projectModel);
-            }
-        }
+            ProjectModel model = new ProjectModel();
 
-        private void RunPrompt(IPrompt prompt)
-        {
-            string userInput;
-            prompt.Show();
-            userInput = Console.ReadLine();
-            while (prompt.Validate(userInput) != true)
+            foreach (IProjectPrompt prompt in _prompts)
             {
-                prompt.ShowFailedValidationMessage();
-                prompt.Show();
-                userInput = Console.ReadLine();
+                PromptCommon.RunPrompt(prompt);
+                prompt.Populate(model);
             }
+
+            return model;
         }
     }
 }
