@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using VS_CPP_Project_Generator.Models;
 using VS_CPP_Project_Generator.Prompts;
 
 namespace UnitTests.PromptTests
@@ -30,7 +31,7 @@ namespace UnitTests.PromptTests
         }
 
         [TestMethod]
-        public void IncludeDirValidation()
+        public void DependencyDirectoryValidation()
         {
             const string testDir1 = "SFML-2.5.1/include";
             const string testDir2 = "SFML-2.5.1/include/";
@@ -42,16 +43,16 @@ namespace UnitTests.PromptTests
             const string testDir8 = "Hello|/";
             const string testDir9 = "Hello";
 
-            IncludeDirPrompt includeDirPrompt = new IncludeDirPrompt();
-            bool test1 = includeDirPrompt.Validate(testDir1);
-            bool test2 = includeDirPrompt.Validate(testDir2);
-            bool test3 = includeDirPrompt.Validate(testDir3);
-            bool test4 = includeDirPrompt.Validate(testDir4);
-            bool test5 = includeDirPrompt.Validate(testDir5);
-            bool test6 = includeDirPrompt.Validate(testDir6);
-            bool test7 = includeDirPrompt.Validate(testDir7);
-            bool test8 = includeDirPrompt.Validate(testDir8);
-            bool test9 = includeDirPrompt.Validate(testDir9);
+            DependencyDirectoryPrompt dirPrompt = new DependencyDirectoryPrompt(DependencyDirectoryType.Include); //The dependency directory type doesn't matter
+            bool test1 = dirPrompt.Validate(testDir1);
+            bool test2 = dirPrompt.Validate(testDir2);
+            bool test3 = dirPrompt.Validate(testDir3);
+            bool test4 = dirPrompt.Validate(testDir4);
+            bool test5 = dirPrompt.Validate(testDir5);
+            bool test6 = dirPrompt.Validate(testDir6);
+            bool test7 = dirPrompt.Validate(testDir7);
+            bool test8 = dirPrompt.Validate(testDir8);
+            bool test9 = dirPrompt.Validate(testDir9);
 
             Assert.AreEqual(test1, true, $"Valid directory not accepted ({testDir1})");
             Assert.AreEqual(test2, true, $"Valid directory not accepted ({testDir2})");
@@ -62,6 +63,32 @@ namespace UnitTests.PromptTests
             Assert.AreEqual(test7, false, $"Invalid directory accepted ({testDir7})");
             Assert.AreEqual(test8, false, $"Invalid directory accepted ({testDir8})");
             Assert.AreEqual(test9, true, $"Valid directory not accepted ({testDir9})");
+        }
+
+        [TestMethod]
+        public void DependencyDirectoryPopulateValidation()
+        {
+            DependencyModel dependencyModel = new DependencyModel();
+
+            DependencyDirectoryPrompt includePrompt = new DependencyDirectoryPrompt(DependencyDirectoryType.Include);
+            DependencyDirectoryPrompt libraryPrompt = new DependencyDirectoryPrompt(DependencyDirectoryType.Library);
+            DependencyDirectoryPrompt dllPrompt = new DependencyDirectoryPrompt(DependencyDirectoryType.Dll);
+
+            const string includeDir = "SFML-2.5.1/include/";
+            const string libraryDir = "SFML-2.5.1/lib/";
+            const string dllDir = "SFML-2.5.1/dll/";
+
+            includePrompt.Validate(includeDir);
+            libraryPrompt.Validate(libraryDir);
+            dllPrompt.Validate(dllDir);
+
+            includePrompt.Populate(dependencyModel);
+            libraryPrompt.Populate(dependencyModel);
+            dllPrompt.Populate(dependencyModel);
+
+            Assert.AreEqual(dependencyModel.IncludeDir, includeDir, "Include prompt did not populate dependency model IncludeDir");
+            Assert.AreEqual(dependencyModel.LibDir, libraryDir, "Library prompt did not populate dependency model LibDir");
+            Assert.AreEqual(dependencyModel.DllDir, dllDir, "Dll prompt did not populate dependency model DllDir");
         }
     }
 }
