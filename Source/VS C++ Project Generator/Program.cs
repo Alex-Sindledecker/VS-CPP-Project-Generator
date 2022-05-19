@@ -1,5 +1,6 @@
 ﻿using System;
 using VS_CPP_Project_Generator.Models;
+using VS_CPP_Project_Generator.Models.ModelGenerators;
 using VS_CPP_Project_Generator.Prompts;
 
 namespace VS_CPP_Project_Generator
@@ -8,20 +9,13 @@ namespace VS_CPP_Project_Generator
     {
         static void Main(string[] args)
         {
-            IPrompt prompt = new ProjectTypePrompt();
+            ProjectModelGenerator projectModelGenerator = new ProjectModelGenerator();
 
-            string userInput;
-            prompt.Show();
-            userInput = Console.ReadLine();
-            while (prompt.Validate(userInput) != true)
-            {
-                prompt.ShowFailedValidationMessage();
-                prompt.Show();
-                userInput = Console.ReadLine();
-            }
+            projectModelGenerator.AddPrompt(new ProjectTypePrompt());
 
-            ProjectModel projectModel = new ProjectModel();
-            prompt.Populate(projectModel);
+            projectModelGenerator.RunPrompts();
+
+            Console.WriteLine(projectModelGenerator.Model.Dependencies[0].Url);
         }
     }
 }
