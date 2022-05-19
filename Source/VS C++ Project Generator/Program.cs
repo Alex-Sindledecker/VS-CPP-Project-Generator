@@ -1,5 +1,6 @@
 ﻿using System;
-using VS_CPP_Project_Generator.Logging;
+using VS_CPP_Project_Generator.Models;
+using VS_CPP_Project_Generator.Prompts;
 
 namespace VS_CPP_Project_Generator
 {
@@ -7,8 +8,20 @@ namespace VS_CPP_Project_Generator
     {
         static void Main(string[] args)
         {
-            ILogger logger = new ConsoleLogger();
-            logger.WriteLine("Hello World!");
+            IPrompt prompt = new ProjectTypePrompt();
+
+            string userInput;
+            prompt.Show();
+            userInput = Console.ReadLine();
+            while (prompt.Validate(userInput) != true)
+            {
+                prompt.ShowFailedValidationMessage();
+                prompt.Show();
+                userInput = Console.ReadLine();
+            }
+
+            ProjectModel projectModel = new ProjectModel();
+            prompt.Populate(projectModel);
         }
     }
 }

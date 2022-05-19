@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>VS_C___Project_Generator</RootNamespace>
+    <RootNamespace>VS_CPP_Project_Generator</RootNamespace>
   </PropertyGroup>
 
 </Project>
