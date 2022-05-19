@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace VS_CPP_Project_Generator.Logging
+namespace VS_CPP_Project_Generator.IOStreams
 {
-    public class ConsoleLogger : ILogger
+    public class ConsoleIOStream : IIOStream
     {
         public void Write(string content)
         {
@@ -14,6 +14,11 @@ namespace VS_CPP_Project_Generator.Logging
         public void WriteLine(string content)
         {
             Console.WriteLine(content);
+        }
+
+        public string ReadLine()
+        {
+            return Console.ReadLine();
         }
     }
 }
