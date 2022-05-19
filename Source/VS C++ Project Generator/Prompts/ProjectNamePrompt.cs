@@ -5,7 +5,7 @@ using VS_CPP_Project_Generator.Models;
 
 namespace VS_CPP_Project_Generator.Prompts
 {
-    class ProjectNamePrompt : IPrompt
+    class ProjectNamePrompt : IProjectPrompt
     {
         private string _name;
 

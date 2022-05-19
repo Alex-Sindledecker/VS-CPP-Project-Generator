@@ -5,10 +5,8 @@ using VS_CPP_Project_Generator.Models;
 
 namespace VS_CPP_Project_Generator.Prompts
 {
-    public interface IPrompt
+    public interface IDependencyPrompt : IPrompt
     {
-        public void Show();
-        public void ShowFailedValidationMessage();
-        public bool Validate(string userInput);
+        public void Populate(DependencyModel model);
     }
 }

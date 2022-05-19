@@ -6,7 +6,7 @@ using VS_CPP_Project_Generator.Models.ModelGenerators;
 
 namespace VS_CPP_Project_Generator.Prompts
 {
-    class ProjectTypePrompt : IPrompt
+    class ProjectTypePrompt : IProjectPrompt
     {
         private int _choice;
 
@@ -15,7 +15,7 @@ namespace VS_CPP_Project_Generator.Prompts
             switch (_choice)
             {
                 case 1:
-                    model.Dependencies.Add(DependencyGenerator.GetSFMLModel());
+                    model.Dependencies.Add(DependencyModelGenerator.GetSFMLModel());
                     break;
                 case 2:
                     //model.dependencies.Add(DependencyGenerator.GetOpenGLModel());

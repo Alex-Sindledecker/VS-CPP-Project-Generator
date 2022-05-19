@@ -5,7 +5,7 @@ using VS_CPP_Project_Generator.Models;
 
 namespace VS_CPP_Project_Generator.Prompts
 {
-    class DiskLocationPrompt : IPrompt
+    class DiskLocationPrompt : IProjectPrompt
     {
         private string _path;
 
