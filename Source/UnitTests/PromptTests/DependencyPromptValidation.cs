@@ -4,10 +4,10 @@ using VS_CPP_Project_Generator.Prompts;
 namespace UnitTests.PromptTests
 {
     [TestClass]
-    public class DependencyURLPromptTest
+    public class DependencyPromptValidation
     {
         [TestMethod]
-        public void TestValidation()
+        public void URLTestValidation()
         {
             const string testUrl1 = "https://github.com/Alex-Sindledecker/VS-CPP-Project-Generator/tree/development";
             const string testUrl2 = "https://github.com/canton7/Stylet";

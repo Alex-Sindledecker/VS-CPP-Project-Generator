@@ -5,30 +5,30 @@ using VS_CPP_Project_Generator.Models;
 
 namespace VS_CPP_Project_Generator.Prompts
 {
-    class DiskLocationPrompt : IProjectPrompt
+    class IncludeDirPrompt : IDependencyPrompt
     {
-        private string _path;
+        private string _dir;
 
-        public void Populate(ProjectModel model)
+        public void Populate(DependencyModel model)
         {
-            model.DiskLocation = _path;
+            model.IncludeDir = _dir;
         }
 
         public void Show()
         {
-            Console.Write("Project path: ");
+            Console.Write("Include folder path: ");
         }
 
         public void ShowFailedValidationMessage()
         {
-            Console.WriteLine("That is not a valid filepath!");
+            Console.WriteLine("Invalid path entered!");
         }
 
         public bool Validate(string userInput)
         {
             if (ValidationCommon.IsValidFilePath(userInput))
             {
-                _path = userInput;
+                _dir = userInput;
                 return true;
             }
 
