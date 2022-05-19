@@ -5,7 +5,7 @@ using VS_CPP_Project_Generator.Models;
 
 namespace VS_CPP_Project_Generator.Prompts
 {
-    class IncludeDirPrompt : IDependencyPrompt
+    public class IncludeDirPrompt : IDependencyPrompt
     {
         private string _dir;
 
