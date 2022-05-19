@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VS_C___Project_Generator
+namespace VS_CPP_Project_Generator
 {
     class Program
     {
