@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Linq;
 using VS_CPP_Project_Generator.Models;
 using VS_CPP_Project_Generator.Prompts;
 
@@ -8,7 +10,7 @@ namespace UnitTests.PromptTests
     public class DependencyPromptValidation
     {
         [TestMethod]
-        public void URLTestValidation()
+        public void URLValidationTest()
         {
             const string testUrl1 = "https://github.com/Alex-Sindledecker/VS-CPP-Project-Generator/tree/development";
             const string testUrl2 = "https://github.com/canton7/Stylet";
@@ -31,7 +33,7 @@ namespace UnitTests.PromptTests
         }
 
         [TestMethod]
-        public void DependencyDirectoryValidation()
+        public void DependencyDirectoryValidationTest()
         {
             const string testDir1 = "SFML-2.5.1/include";
             const string testDir2 = "SFML-2.5.1/include/";
@@ -66,7 +68,7 @@ namespace UnitTests.PromptTests
         }
 
         [TestMethod]
-        public void DependencyDirectoryPopulateValidation()
+        public void DependencyDirectoryPopulateTest()
         {
             DependencyModel dependencyModel = new DependencyModel();
 
@@ -89,6 +91,64 @@ namespace UnitTests.PromptTests
             Assert.AreEqual(dependencyModel.IncludeDir, includeDir, "Include prompt did not populate dependency model IncludeDir");
             Assert.AreEqual(dependencyModel.LibDir, libraryDir, "Library prompt did not populate dependency model LibDir");
             Assert.AreEqual(dependencyModel.DllDir, dllDir, "Dll prompt did not populate dependency model DllDir");
+        }
+
+        [TestMethod]
+        public void LibraryNamesValidationTest()
+        {
+            const string testNames1 = "sfml.lib";
+            const string testNames2 = "sfml-d.lib";
+            const string testNames3 = "sfml-d.lib, sfml.lib";
+            const string testNames4 = "sfml-d.lib, sfml.lib, sfml-graphics.lib";
+            const string testNames5 = "sfml.qlib";
+            const string testNames6 = "sfml.lib, sfml.qlib";
+            const string testNames7 = ".lib";
+            const string testNames8 = "lib";
+
+            LibraryNamesPrompt prompt = new LibraryNamesPrompt(DependencyLibraryConfiguration.Debug); // The configuration doesn't matter
+
+            bool test1 = prompt.Validate(testNames1);
+            bool test2 = prompt.Validate(testNames2);
+            bool test3 = prompt.Validate(testNames3);
+            bool test4 = prompt.Validate(testNames4);
+            bool test5 = prompt.Validate(testNames5);
+            bool test6 = prompt.Validate(testNames6);
+            bool test7 = prompt.Validate(testNames7);
+            bool test8 = prompt.Validate(testNames8);
+
+            Assert.AreEqual(test1, true, $"{testNames1} was marked invalid!");
+            Assert.AreEqual(test2, true, $"{testNames2} was marked invalid!");
+            Assert.AreEqual(test3, true, $"{testNames3} was marked invalid!");
+            Assert.AreEqual(test4, true, $"{testNames4} was marked invalid!");
+            Assert.AreEqual(test5, false, $"{testNames5} was marked valid!");
+            Assert.AreEqual(test6, false, $"{testNames6} was marked valid!");
+            Assert.AreEqual(test7, false, $"{testNames7} was marked valid!");
+            Assert.AreEqual(test8, false, $"{testNames8} was marked valid!");
+        }
+
+        [TestMethod]
+        public void LibraryNamesPopulateTest()
+        {
+            DependencyModel dependencyModel = new DependencyModel();
+
+            LibraryNamesPrompt debugPrompt = new LibraryNamesPrompt(DependencyLibraryConfiguration.Debug);
+            LibraryNamesPrompt releasePrompt = new LibraryNamesPrompt(DependencyLibraryConfiguration.Release);
+
+            const string debugLibList = "sfml-system-d.lib, sfml-window-d.lib, sfml-graphics-d.lib";
+            const string releaseLibList = "sfml-system.lib";
+
+            debugPrompt.Validate(debugLibList);
+            releasePrompt.Validate(releaseLibList);
+
+            debugPrompt.Populate(dependencyModel);
+            releasePrompt.Populate(dependencyModel);
+
+            List<string> expectedDebugResult = new List<string>() { "sfml-system-d.lib", "sfml-window-d.lib", "sfml-graphics-d.lib" };
+            List<string> expectedReleaseResult = new List<string>() { "sfml-system.lib" };
+
+            CollectionAssert.AreEqual(dependencyModel.DebugLibNames, expectedDebugResult, "Dependency model debug lib names not correctly populated");
+            CollectionAssert.AreEqual(dependencyModel.ReleaseLibNames, expectedReleaseResult, "Dependency model release lib names not correctly populated");
+            
         }
     }
 }
