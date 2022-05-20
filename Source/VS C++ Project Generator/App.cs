@@ -9,9 +9,7 @@ namespace VS_CPP_Project_Generator
     {
         static void Main(string[] args)
         {
-            
-
-            //ProjectModel model = GetProjectModel();
+            ProjectModel model = GetProjectModel();
         }
 
         static ProjectModel GetProjectModel()
@@ -22,6 +20,13 @@ namespace VS_CPP_Project_Generator
             projectModelGenerator.AddPrompt(new ProjectNamePrompt());
             projectModelGenerator.AddPrompt(new DiskLocationPrompt());
             projectModelGenerator.AddPrompt(new ProjectTypePrompt());
+
+            dependencyModelGenerator.AddPrompt(new DependencyURLPrompt());
+            dependencyModelGenerator.AddPrompt(new DependencyDirectoryPrompt(DependencyDirectoryType.Include));
+            dependencyModelGenerator.AddPrompt(new DependencyDirectoryPrompt(DependencyDirectoryType.Library));
+            dependencyModelGenerator.AddPrompt(new DependencyDirectoryPrompt(DependencyDirectoryType.Dll));
+            dependencyModelGenerator.AddPrompt(new LibraryNamesPrompt(DependencyLibraryConfiguration.Debug));
+            dependencyModelGenerator.AddPrompt(new LibraryNamesPrompt(DependencyLibraryConfiguration.Release));
 
             ProjectModel model = projectModelGenerator.RunPrompts();
 
