@@ -60,6 +60,28 @@ namespace UnitTests.PromptTests
             Assert.AreEqual(mainInExpectedLocation, true, "Source files not accurately moved!");
         }
 
+        [TestMethod]
+        public void TestSLNCreation()
+        {
+            ProjectModel model = new ProjectModel()
+            {
+                Name = "TestProj",
+                DiskLocation = $"{_root}",
+                TemplateSourcePath = ""
+            };
+
+            ProjectBuilder.BuildDirectoryStructure(model);
+            ProjectBuilder.CreateSLN(model);
+
+            bool slnCreated = File.Exists($"{_root}Source/{model.Name}.sln");
+
+            DeleteCreatedDirectories();
+
+            Assert.AreEqual(slnCreated, true, "SLN File Not Created!! Warning: This could mean it was created in an unexpected location...");
+        }
+
+        //TODO: Sln validation
+
         private void DeleteCreatedDirectories()
         {
             if (Directory.Exists(_root) == true)

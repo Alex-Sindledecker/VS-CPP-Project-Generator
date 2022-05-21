@@ -12,6 +12,7 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
         {
             BuildDirectoryStructure(model);
             MoveTemplateFiles(model);
+            CreateSLN(model);
         }
 
         public static void BuildDirectoryStructure(ProjectModel model)
@@ -35,6 +36,22 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
                     File.Copy(file, destFile, true);
                 }
             }
+        }
+
+        public static void CreateSLN(ProjectModel model)
+        {
+            const string formatVersion = "12.00";
+
+            StreamWriter slnWriter = new StreamWriter($"{model.DiskLocation}/Source/{model.Name}.sln");
+
+            //This ends up getting turned into some sort of hash by visual studio. I have no idea why or how though
+            string preHash = model.Name + DateTime.Now.ToString();
+
+            slnWriter.WriteLine($"Microsoft Visual Studio Solution File, Format Version {formatVersion}");
+            slnWriter.WriteLine($"Project(\"{preHash}\") = \"{model.Name}\", \"{model.Name}/{model.Name}.vcxproj\", \"{preHash}\"");
+            slnWriter.WriteLine("EndProject");
+
+            slnWriter.Close();
         }
     }
 }
