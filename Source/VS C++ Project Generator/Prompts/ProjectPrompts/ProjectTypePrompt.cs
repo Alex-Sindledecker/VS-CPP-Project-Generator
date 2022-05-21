@@ -8,6 +8,7 @@ namespace VS_CPP_Project_Generator.Prompts
 {
     class ProjectTypePrompt : IProjectPrompt
     {
+        private const string _templatePath = "ProjectTemplateSourceFiles/";
         private int _choice;
 
         public void Populate(ProjectModel model)
@@ -16,8 +17,10 @@ namespace VS_CPP_Project_Generator.Prompts
             {
                 case 1:
                     model.Dependencies.Add(DependencyModelGenerator.GetSFMLModel());
+                    model.TemplateSourcePath = $"{_templatePath}SFMLSource/";
                     break;
                 case 2:
+                    //model.TemplateSourcePath = "";
                     //model.dependencies.Add(DependencyGenerator.GetOpenGLModel());
                     break;
             }
