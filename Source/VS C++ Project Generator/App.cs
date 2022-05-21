@@ -2,6 +2,7 @@
 using VS_CPP_Project_Generator.Models;
 using VS_CPP_Project_Generator.Models.ModelGenerators;
 using VS_CPP_Project_Generator.Prompts;
+using VS_CPP_Project_Generator.ProjectAssembly;
 
 namespace VS_CPP_Project_Generator
 {
@@ -10,6 +11,8 @@ namespace VS_CPP_Project_Generator
         static void Main(string[] args)
         {
             ProjectModel model = GetProjectModel();
+
+            ProjectBuilder.BuildFromModel(model);
         }
 
         static ProjectModel GetProjectModel()

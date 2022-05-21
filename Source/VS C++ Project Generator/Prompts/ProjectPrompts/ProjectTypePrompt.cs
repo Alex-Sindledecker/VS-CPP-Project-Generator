@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using VS_CPP_Project_Generator.Models;
 using VS_CPP_Project_Generator.Models.ModelGenerators;
+using VS_CPP_Project_Generator.ProjectAssembly;
 
 namespace VS_CPP_Project_Generator.Prompts
 {
     class ProjectTypePrompt : IProjectPrompt
     {
-        private const string _templatePath = "ProjectTemplateSourceFiles/";
+        private string _templatePath;
         private int _choice;
 
         public void Populate(ProjectModel model)
@@ -24,6 +23,11 @@ namespace VS_CPP_Project_Generator.Prompts
                     //model.dependencies.Add(DependencyGenerator.GetOpenGLModel());
                     break;
             }
+        }
+
+        public ProjectTypePrompt()
+        {
+            _templatePath = PathTools.GetTemplateRootPath();
         }
 
         public void Show()

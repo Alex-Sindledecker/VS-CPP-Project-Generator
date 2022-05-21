@@ -7,7 +7,7 @@ using VS_CPP_Project_Generator.Prompts;
 namespace UnitTests.PromptTests
 {
     [TestClass]
-    public class DependencyPromptValidation
+    public class PromptTests
     {
         [TestMethod]
         public void URLValidationTest()
