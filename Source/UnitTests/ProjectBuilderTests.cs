@@ -71,7 +71,7 @@ namespace UnitTests.PromptTests
             };
 
             ProjectBuilder.BuildDirectoryStructure(model);
-            ProjectBuilder.CreateSLN(model);
+            ProjectBuilder.CreateSLN(model, "abcd1234-Fake-guid-5678-4339757f1a74");
 
             bool slnCreated = File.Exists($"{_root}Source/{model.Name}.sln");
 
@@ -81,6 +81,38 @@ namespace UnitTests.PromptTests
         }
 
         //TODO: Sln validation
+
+        [TestMethod]
+        public void TestVCXProjCreation()
+        {
+            ProjectModel model = new ProjectModel()
+            {
+                Name = "TestProj",
+                DiskLocation = $"{_root}",
+                TemplateSourcePath = $"{PathTools.GetTemplateRootPath()}/SFMLSource/",
+                Dependencies = new List<DependencyModel>() { new DependencyModel()
+                    {
+                        Url = "https://github.com/SFML/SFML/releases/download/2.5.1/SFML-2.5.1-windows-vc15-64-bit.zip",
+                        IncludeDir = "SFML/include/",
+                        LibDir = "SFML/lib/",
+                        DllDir = "SFML/bin/",
+                        DebugLibNames = new List<string>(){ "sfml-system-d.lib", "sfml-window-d.lib", "sfml-graphics-d.lib" },
+                        ReleaseLibNames = new List<string>(){ "sfml-system.lib", "sfml-window.lib", "sfml-graphics.lib" }
+                    }
+                }
+            };
+
+            ProjectBuilder.BuildDirectoryStructure(model);
+            ProjectBuilder.CreateVCXProj(model);
+
+            bool vcxprojCreated = File.Exists($"{_root}Source/{model.Name}/{model.Name}.vcxproj");
+
+            DeleteCreatedDirectories();
+
+            Assert.AreEqual(vcxprojCreated, true, "Project file not created!! Warning: The file may have been created in an unexpected location...");
+        }
+
+        //TODO: vcxproj validation
 
         private void DeleteCreatedDirectories()
         {
