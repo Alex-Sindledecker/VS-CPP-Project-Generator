@@ -212,7 +212,7 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
   </ItemDefinitionGroup>");
             projectWriter.WriteLine(@"  <ItemGroup>
     <ClCompile Include=""main.cpp"" />
-  </ ItemGroup > ");
+  </ItemGroup> ");
             projectWriter.Write("</Project>");
             
             projectWriter.Close();
