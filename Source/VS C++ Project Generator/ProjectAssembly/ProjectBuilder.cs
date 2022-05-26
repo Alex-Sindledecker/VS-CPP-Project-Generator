@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using VS_CPP_Project_Generator.Models;
+using VS_CPP_Project_Generator.ProjectAssembly.VS_Project_Types;
 
 namespace VS_CPP_Project_Generator.ProjectAssembly
 {
@@ -61,8 +62,8 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
 
             StreamWriter projectWriter = new StreamWriter($"{model.DiskLocation}/Source/{model.Name}/{model.Name}.vcxproj");
 
-            VCXProj project = new VCXProj(model, platformToolset);
-            projectWriter.Write(project.BuildStandardXML());
+            VSProject project = new VCXProj(model, platformToolset);
+            projectWriter.Write(project.BuildXML());
 
             projectWriter.Close();
 

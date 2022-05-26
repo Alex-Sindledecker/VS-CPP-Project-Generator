@@ -3,26 +3,28 @@ using System.Collections.Generic;
 using System.Text;
 using VS_CPP_Project_Generator.Models;
 
-namespace VS_CPP_Project_Generator.ProjectAssembly
+namespace VS_CPP_Project_Generator.ProjectAssembly.VS_Project_Types
 {
     //This class doesn't really need to exist right now because its only doing one thing, but in the future more compelx project types and configurations might be 
     //availible so this would allow for that to be implemented a bit easier
-    public class VCXProj
+    public class VCXProj : VSProject
     {
-        private Guid _guid;
         private ProjectModel _projectModel;
         private string _platformToolset;
-        public Guid GUID { get { return _guid; } }
 
         public VCXProj(ProjectModel model, string platformToolset)
         {
-            _guid = Guid.NewGuid();
             _projectModel = model;
             _platformToolset = platformToolset;
         }
 
+        public override string BuildXML()
+        {
+            return BuildStandardXML();
+        }
+
         //Returns an xml string that will ultimately be written to a file
-        public string BuildStandardXML()
+        private string BuildStandardXML()
         {
             string outputXML = "";
 
@@ -52,7 +54,7 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
   </ItemGroup>";
             outputXML += @$"  <PropertyGroup Label=""Globals"">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{{{_guid}}}</ProjectGuid>
+    <ProjectGuid>{{{GUID}}}</ProjectGuid>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>";
             outputXML += "  <Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.Default.props\" />";
@@ -113,13 +115,13 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>{includeDirs};%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>{includeDirs}%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>{libDirs};%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>{libStrings.Item1};%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>{libDirs}%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>{libStrings.Item1}%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition=""'$(Configuration)|$(Platform)'=='Release|Win32'"">
@@ -130,15 +132,15 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>{includeDirs};%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>{includeDirs}%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>{libDirs};%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>{libStrings.Item2};%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>{libDirs}%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>{libStrings.Item2}%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition=""'$(Configuration)|$(Platform)'=='Debug|x64'"">
@@ -147,13 +149,13 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>{includeDirs};%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>{includeDirs}%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>{libDirs};%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>{libStrings.Item1};%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>{libDirs}%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>{libStrings.Item1}%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition=""'$(Configuration)|$(Platform)'=='Release|x64'"">
@@ -164,15 +166,15 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>{includeDirs};%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>{includeDirs}%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>{libDirs};%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>{libStrings.Item2};%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>{libDirs}%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>{libStrings.Item2}%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>";
             outputXML += @"  <ItemGroup>
