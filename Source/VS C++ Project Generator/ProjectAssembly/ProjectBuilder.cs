@@ -14,8 +14,13 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
             BuildDirectoryStructure(model);
             MoveTemplateFiles(model);
 
-            string guid = CreateVCXProj(model);
-            CreateSLN(model, guid);
+            VSProject mainProject = new VCXProj(model, "v142");
+
+            SLNBuilder slnBuilder = new SLNBuilder(model, "12.00");
+            slnBuilder.AddProject(mainProject);
+
+            CreateProjFile(model, mainProject);
+            CreateSLNFile(model, slnBuilder);
         }
 
         public static void BuildDirectoryStructure(ProjectModel model)
@@ -41,33 +46,22 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
             }
         }
 
-        public static void CreateSLN(ProjectModel model, string projectGUID)
+        public static void CreateSLNFile(ProjectModel model, SLNBuilder builder)
         {
-            const string formatVersion = "12.00";
-
             StreamWriter slnWriter = new StreamWriter($"{model.DiskLocation}/Source/{model.Name}.sln");
 
-            string projectTypeGUID = "{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}";
-
-            slnWriter.WriteLine($"Microsoft Visual Studio Solution File, Format Version {formatVersion}");
-            slnWriter.WriteLine($"Project(\"{projectTypeGUID}\") = \"{model.Name}\", \"{model.Name}/{model.Name}.vcxproj\", \"{{{projectGUID}}}\"");
-            slnWriter.WriteLine("EndProject");
+            slnWriter.Write(builder.BuildFileContent());
 
             slnWriter.Close();
         }
 
-        public static string CreateVCXProj(ProjectModel model)
+        public static void CreateProjFile(ProjectModel model, VSProject project)
         {
-            const string platformToolset = "v142";
+            StreamWriter projectWriter = new StreamWriter($"{model.DiskLocation}/Source/{model.Name}/{model.Name}.{project.GetFileExtension()}");
 
-            StreamWriter projectWriter = new StreamWriter($"{model.DiskLocation}/Source/{model.Name}/{model.Name}.vcxproj");
-
-            VSProject project = new VCXProj(model, platformToolset);
             projectWriter.Write(project.BuildXML());
 
             projectWriter.Close();
-
-            return project.GUID.ToString();
         }
     }
 }

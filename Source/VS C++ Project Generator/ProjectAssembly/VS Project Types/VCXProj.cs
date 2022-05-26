@@ -18,6 +18,16 @@ namespace VS_CPP_Project_Generator.ProjectAssembly.VS_Project_Types
             _platformToolset = platformToolset;
         }
 
+        public override string GetProjectTypeGUID()
+        {
+            return "8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942"; //GUID for C++ console applications
+        }
+
+        public override string GetFileExtension()
+        {
+            return "vcxproj";
+        }
+
         public override string BuildXML()
         {
             return BuildStandardXML();

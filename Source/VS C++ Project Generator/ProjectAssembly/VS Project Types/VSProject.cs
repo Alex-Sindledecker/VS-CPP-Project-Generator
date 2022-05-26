@@ -15,7 +15,11 @@ namespace VS_CPP_Project_Generator.ProjectAssembly.VS_Project_Types
             _guid = Guid.NewGuid();
         }
 
+        //Builds the xml for a project
         public abstract string BuildXML();
-
+        //Note that this is different than the GUID member above
+        public abstract string GetProjectTypeGUID();
+        //Returns the file extension (csproj or vcxproj for example)
+        public abstract string GetFileExtension();
     }
 }
