@@ -65,9 +65,9 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
 
             StreamWriter projectWriter = new StreamWriter($"{model.DiskLocation}/Source/{model.Name}/{model.Name}.vcxproj");
 
-            projectWriter.WriteLine("<?xml version=\"1.0\" encoding=\"utf - 8\"?>");
+            projectWriter.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
             projectWriter.WriteLine("<Project DefaultTargets=\"Build\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">");
-            projectWriter.WriteLine(@"<ItemGroup Label=""ProjectConfigurations"">
+            projectWriter.WriteLine(@"  <ItemGroup Label=""ProjectConfigurations"">
     <ProjectConfiguration Include=""Debug|Win32"">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -85,13 +85,13 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>");
-            projectWriter.WriteLine(@$"<PropertyGroup Label=""Globals"">
+            projectWriter.WriteLine(@$"  <PropertyGroup Label=""Globals"">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{{{guid}}}</ProjectGuid>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>");
-            projectWriter.WriteLine("<Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.Default.props\" />");
-            projectWriter.WriteLine(@$"<PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='Debug|Win32'"" Label=""Configuration"">
+            projectWriter.WriteLine("  <Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.Default.props\" />");
+            projectWriter.WriteLine(@$"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='Debug|Win32'"" Label=""Configuration"">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>{platformToolset}</PlatformToolset>
@@ -117,7 +117,7 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>");
-            projectWriter.WriteLine("<Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.props\" />");
+            projectWriter.WriteLine("  <Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.props\" />");
             projectWriter.WriteLine(@"  <ImportGroup Label=""PropertySheets"" Condition=""'$(Configuration)|$(Platform)' =='Debug|Win32'"" >
     <Import Project=""$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"" Condition =""exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"" Label =""LocalAppDataPlatform"" />
   </ImportGroup>
@@ -142,7 +142,7 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
   <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='Release|x64'"">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>");
-            projectWriter.WriteLine(@$"<ItemDefinitionGroup Condition=""'$(Configuration)|$(Platform)'=='Debug|Win32'"">
+            projectWriter.WriteLine(@$"  <ItemDefinitionGroup Condition=""'$(Configuration)|$(Platform)'=='Debug|Win32'"">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
@@ -213,6 +213,7 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
             projectWriter.WriteLine(@"  <ItemGroup>
     <ClCompile Include=""main.cpp"" />
   </ItemGroup> ");
+            projectWriter.WriteLine("  <Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.targets\" />");
             projectWriter.Write("</Project>");
             
             projectWriter.Close();
