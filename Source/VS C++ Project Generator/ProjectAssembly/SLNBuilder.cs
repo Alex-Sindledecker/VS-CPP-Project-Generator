@@ -16,6 +16,8 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
         {
             _version = formatVersion;
             _projectModel = projectModel;
+
+            _projects = new List<VSProject>();
         }
 
         public void AddProject(VSProject project)
@@ -27,11 +29,11 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
         {
             string output = "";
 
-            output += $"Microsoft Visual Studio Solution File, Format Version {_version}";
+            output += $"Microsoft Visual Studio Solution File, Format Version {_version}\n";
             foreach (VSProject project in _projects)
             {
-                output += $"Project(\"{{{project.GetProjectTypeGUID()}}}\") = \"{_projectModel.Name}\", \"{_projectModel.Name}/{_projectModel.Name}.vcxproj\", \"{{{project.GUID}}}\"";
-                output += "EndProject";
+                output += $"Project(\"{{{project.GetProjectTypeGUID()}}}\") = \"{_projectModel.Name}\", \"{_projectModel.Name}/{_projectModel.Name}.vcxproj\", \"{{{project.GUID}}}\"\n";
+                output += "EndProject\n";
             }
 
             return output;

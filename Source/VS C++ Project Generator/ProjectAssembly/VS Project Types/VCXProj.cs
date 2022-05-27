@@ -42,8 +42,8 @@ namespace VS_CPP_Project_Generator.ProjectAssembly.VS_Project_Types
             string libDirs = GetLibraryDirectoriesAsString();
             Tuple<string, string> libStrings = GetLibNamesAsStrings();
 
-            outputXML += "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
-            outputXML += "<Project DefaultTargets=\"Build\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">";
+            outputXML += "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+            outputXML += "<Project DefaultTargets=\"Build\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">\n";
             outputXML += @"  <ItemGroup Label=""ProjectConfigurations"">
     <ProjectConfiguration Include=""Debug|Win32"">
       <Configuration>Debug</Configuration>
@@ -61,13 +61,13 @@ namespace VS_CPP_Project_Generator.ProjectAssembly.VS_Project_Types
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-  </ItemGroup>";
+  </ItemGroup>" + '\n';
             outputXML += @$"  <PropertyGroup Label=""Globals"">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{{{GUID}}}</ProjectGuid>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-  </PropertyGroup>";
-            outputXML += "  <Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.Default.props\" />";
+  </PropertyGroup>" + '\n';
+            outputXML += "  <Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.Default.props\" />\n";
             outputXML += @$"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='Debug|Win32'"" Label=""Configuration"">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -93,8 +93,8 @@ namespace VS_CPP_Project_Generator.ProjectAssembly.VS_Project_Types
     <PlatformToolset>{_platformToolset}</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>";
-            outputXML += "  <Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.props\" />";
+  </PropertyGroup>" + '\n';
+            outputXML += "  <Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.props\" />\n";
             outputXML += @"  <ImportGroup Label=""PropertySheets"" Condition=""'$(Configuration)|$(Platform)' =='Debug|Win32'"" >
     <Import Project=""$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"" Condition =""exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"" Label =""LocalAppDataPlatform"" />
   </ImportGroup>
@@ -106,7 +106,7 @@ namespace VS_CPP_Project_Generator.ProjectAssembly.VS_Project_Types
   </ImportGroup>
   <ImportGroup Label=""PropertySheets"" Condition =""'$(Configuration)|$(Platform)' =='Release|x64'"" >
     <Import Project=""$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"" Condition =""exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"" Label =""LocalAppDataPlatform"" />
-  </ImportGroup>";
+  </ImportGroup>" + '\n';
             outputXML += @"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='Debug|Win32'"">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
@@ -118,7 +118,7 @@ namespace VS_CPP_Project_Generator.ProjectAssembly.VS_Project_Types
   </PropertyGroup>
   <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='Release|x64'"">
     <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>";
+  </PropertyGroup>" + '\n';
             outputXML += @$"  <ItemDefinitionGroup Condition=""'$(Configuration)|$(Platform)'=='Debug|Win32'"">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -186,12 +186,12 @@ namespace VS_CPP_Project_Generator.ProjectAssembly.VS_Project_Types
       <AdditionalLibraryDirectories>{libDirs}%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>{libStrings.Item2}%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-  </ItemDefinitionGroup>";
+  </ItemDefinitionGroup>" + '\n';
             outputXML += @"  <ItemGroup>
     <ClCompile Include=""main.cpp"" />
-  </ItemGroup> ";
-            outputXML += "  <Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.targets\" />";
-            outputXML += "</Project>";
+  </ItemGroup> " + '\n';
+            outputXML += "  <Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.targets\" />\n";
+            outputXML += "</Project>\n";
 
             return outputXML;
         }

@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using VS_CPP_Project_Generator.Models;
 using VS_CPP_Project_Generator.ProjectAssembly;
+using VS_CPP_Project_Generator.ProjectAssembly.VS_Project_Types;
 
 namespace UnitTests.PromptTests
 {
@@ -61,7 +62,7 @@ namespace UnitTests.PromptTests
         }
 
         [TestMethod]
-        public void TestSLNCreation()
+        public void TestSLNFileCreation()
         {
             ProjectModel model = new ProjectModel()
             {
@@ -70,8 +71,12 @@ namespace UnitTests.PromptTests
                 TemplateSourcePath = ""
             };
 
+            SLNBuilder builder = new SLNBuilder(model, "v142");
+            VCXProj tempProject = new VCXProj(model, "12.00");
+            builder.AddProject(tempProject);
+
             ProjectBuilder.BuildDirectoryStructure(model);
-            ProjectBuilder.CreateSLN(model, "abcd1234-Fake-guid-5678-4339757f1a74");
+            ProjectBuilder.CreateSLNFile(model, builder);
 
             bool slnCreated = File.Exists($"{_root}Source/{model.Name}.sln");
 
@@ -83,7 +88,7 @@ namespace UnitTests.PromptTests
         //TODO: Sln validation
 
         [TestMethod]
-        public void TestVCXProjCreation()
+        public void TestProjectFileCreation()
         {
             ProjectModel model = new ProjectModel()
             {
@@ -102,8 +107,10 @@ namespace UnitTests.PromptTests
                 }
             };
 
+            VSProject project = new VCXProj(model, "12.00");
+
             ProjectBuilder.BuildDirectoryStructure(model);
-            ProjectBuilder.CreateVCXProj(model);
+            ProjectBuilder.CreateProjFile(model, project);
 
             bool vcxprojCreated = File.Exists($"{_root}Source/{model.Name}/{model.Name}.vcxproj");
 
