@@ -7,7 +7,7 @@ using VS_CPP_Project_Generator.Models;
 using VS_CPP_Project_Generator.ProjectAssembly;
 using VS_CPP_Project_Generator.ProjectAssembly.VS_Project_Types;
 
-namespace UnitTests.PromptTests
+namespace UnitTests
 {
     [TestClass]
     public class ProjectBuilderTests

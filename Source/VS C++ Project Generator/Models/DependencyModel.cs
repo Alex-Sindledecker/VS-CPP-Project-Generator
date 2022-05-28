@@ -12,5 +12,6 @@ namespace VS_CPP_Project_Generator.Models
         public string DllDir { get; set; } //Where .dlls files are locationed (optional)
         public List<string> DebugLibNames { get; set; } //Library names for a debug config
         public List<string> ReleaseLibNames { get; set; } //Library names for a release config
+        public List<string> IncludeInProject { get; set; } //List of files to include in the project
     }
 }

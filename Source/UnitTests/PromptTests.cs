@@ -4,7 +4,7 @@ using System.Linq;
 using VS_CPP_Project_Generator.Models;
 using VS_CPP_Project_Generator.Prompts;
 
-namespace UnitTests.PromptTests
+namespace UnitTests
 {
     [TestClass]
     public class PromptTests
