@@ -9,13 +9,23 @@ namespace VS_CPP_Project_Generator.ProjectAssembly.VS_Project_Types
     //availible so this would allow for that to be implemented a bit easier
     public class VCXProj : VSProject
     {
+        private List<string> _includeFiles;
         private ProjectModel _projectModel;
         private string _platformToolset;
 
         public VCXProj(ProjectModel model, string platformToolset)
         {
+            _includeFiles = new List<string> { "main.cpp" };
             _projectModel = model;
             _platformToolset = platformToolset;
+
+            foreach (DependencyModel dependencyModel in model.Dependencies)
+            {
+                foreach (string includeFile in dependencyModel.IncludeInProject)
+                {
+                    _includeFiles.Add($"$(SolutionDir)Dependencies/{includeFile}");
+                }
+            }
         }
 
         public override string GetProjectTypeGUID()
@@ -31,6 +41,31 @@ namespace VS_CPP_Project_Generator.ProjectAssembly.VS_Project_Types
         public override string BuildXML()
         {
             return BuildStandardXML();
+        }
+
+        //Returns xml for the .vcxproj.user file
+        public string GetUserFileXML()
+        {
+            string[] configs = { "'Debug|Win32'", "'Release|Win32'", "'Debug|x64'", "'Release|x64'" };
+
+            string output = "";
+
+            string binPaths = "";
+            foreach (DependencyModel dependencyModel in _projectModel.Dependencies)
+                binPaths += $"$(SolutionDir)Dependencies\\{dependencyModel.DllDir};";
+
+            output += "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+            output += "<Project ToolsVersion=\"Current\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">\n";
+            foreach (string config in configs)
+            {
+                output += $"  <PropertyGroup Condition=\"'$(Configuration)|$(Platform)'=={config}\">\n";
+                output += $"    <LocalDebuggerEnvironment>PATH=%PATH%;{binPaths}</LocalDebuggerEnvironment>\n";
+                output += "    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>\n";
+                output += "  </PropertyGroup>\n";
+            }
+            output += "</Project>";
+
+            return output;
         }
 
         //Returns an xml string that will ultimately be written to a file
@@ -187,9 +222,10 @@ namespace VS_CPP_Project_Generator.ProjectAssembly.VS_Project_Types
       <AdditionalDependencies>{libStrings.Item2}%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>" + '\n';
-            outputXML += @"  <ItemGroup>
-    <ClCompile Include=""main.cpp"" />
-  </ItemGroup> " + '\n';
+            outputXML += "  <ItemGroup>\n";
+            foreach (string file in _includeFiles)
+                outputXML += @$"    <ClCompile Include=""{file}"" />" + '\n';
+            outputXML += "  </ItemGroup> " + '\n';
             outputXML += "  <Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.targets\" />\n";
             outputXML += "</Project>\n";
 

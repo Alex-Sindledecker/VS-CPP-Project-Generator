@@ -19,8 +19,10 @@ namespace VS_CPP_Project_Generator.Prompts
                     model.TemplateSourcePath = $"{_templatePath}SFMLSource/";
                     break;
                 case 2:
-                    //model.TemplateSourcePath = "";
-                    //model.dependencies.Add(DependencyGenerator.GetOpenGLModel());
+                    model.TemplateSourcePath = $"{_templatePath}OpenGLSource/";
+                    model.Dependencies.Add(DependencyModelGenerator.GetGLADModel());
+                    model.Dependencies.Add(DependencyModelGenerator.GetGLFWModel());
+                    model.Dependencies.Add(DependencyModelGenerator.GetGLMModel());
                     break;
             }
         }

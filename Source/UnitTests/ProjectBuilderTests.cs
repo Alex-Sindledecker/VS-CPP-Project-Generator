@@ -124,7 +124,8 @@ EndProject
                         LibDir = "SFML/lib/",
                         DllDir = "SFML/bin/",
                         DebugLibNames = new List<string>(){ "sfml-system-d.lib", "sfml-window-d.lib", "sfml-graphics-d.lib" },
-                        ReleaseLibNames = new List<string>(){ "sfml-system.lib", "sfml-window.lib", "sfml-graphics.lib" }
+                        ReleaseLibNames = new List<string>(){ "sfml-system.lib", "sfml-window.lib", "sfml-graphics.lib" },
+                        IncludeInProject = new List<string>()
                     }
                 }
             };
@@ -156,7 +157,8 @@ EndProject
                         LibDir = "SFML-2.5.1/lib/",
                         DllDir = "SFML-2.5.1/bin/",
                         DebugLibNames = new List<string>(){ "sfml-graphics-d.lib", "sfml-window-d.lib", "sfml-system-d.lib" },
-                        ReleaseLibNames = new List<string>(){ "sfml-graphics.lib", "sfml-window.lib", "sfml-system.lib" }
+                        ReleaseLibNames = new List<string>(){ "sfml-graphics.lib", "sfml-window.lib", "sfml-system.lib" },
+                        IncludeInProject = new List<string>()
                     }
                 }
             };

@@ -43,9 +43,9 @@ namespace VS_CPP_Project_Generator.Models.ModelGenerators
             return new DependencyModel
             {
                 Url = "https://github.com/SFML/SFML/releases/download/2.5.1/SFML-2.5.1-windows-vc15-64-bit.zip",
-                IncludeDir = "SFML-2.5.1/include/",
-                LibDir = "SFML-2.5.1/lib/",
-                DllDir = "SFML-2.5.1/bin/",
+                IncludeDir = "SFML-2.5.1-windows-vc15-64-bit/SFML-2.5.1/include/",
+                LibDir = "SFML-2.5.1-windows-vc15-64-bit/SFML-2.5.1/lib/",
+                DllDir = "SFML-2.5.1-windows-vc15-64-bit/SFML-2.5.1/bin/",
                 DebugLibNames = new List<string> { "sfml-graphics-d.lib", "sfml-window-d.lib", "sfml-system-d.lib" },
                 ReleaseLibNames = new List<string> { "sfml-graphics.lib", "sfml-window.lib", "sfml-system.lib" },
                 IncludeInProject = new List<string> {  }
@@ -57,12 +57,12 @@ namespace VS_CPP_Project_Generator.Models.ModelGenerators
             return new DependencyModel
             {
                 Url = GetGLADZipURL(),
-                IncludeDir = "include/glad/",
+                IncludeDir = "glad/include/",
                 LibDir = "",
                 DllDir = "",
-                DebugLibNames = new List<string> {  },
-                ReleaseLibNames = new List<string> {  },
-                IncludeInProject = new List<string> { "src/glad.c" }
+                DebugLibNames = new List<string> { "opengl32.lib" },
+                ReleaseLibNames = new List<string> { "opengl32.lib" },
+                IncludeInProject = new List<string> { "glad/src/glad.c" }
             };
         }
 
@@ -71,9 +71,9 @@ namespace VS_CPP_Project_Generator.Models.ModelGenerators
             return new DependencyModel
             {
                 Url = "https://github.com/glfw/glfw/releases/download/3.3.7/glfw-3.3.7.bin.WIN64.zip",
-                IncludeDir = "glfw-3.3.7.bin.WIN64/include/",
-                LibDir = "glfw-3.3.7.bin.WIN64/lib-vc2019/",
-                DllDir = "glfw-3.3.7.bin.WIN64/lib-vc2019/",
+                IncludeDir = "glfw-3.3.7.bin.WIN64/glfw-3.3.7.bin.WIN64/include/",
+                LibDir = "glfw-3.3.7.bin.WIN64/glfw-3.3.7.bin.WIN64/lib-vc2019/",
+                DllDir = "glfw-3.3.7.bin.WIN64/glfw-3.3.7.bin.WIN64/lib-vc2019/",
                 DebugLibNames = new List<string> { "glfw3.lib" },
                 ReleaseLibNames = new List<string> { "glfw3.lib" },
                 IncludeInProject = new List<string> { }
@@ -85,7 +85,7 @@ namespace VS_CPP_Project_Generator.Models.ModelGenerators
             return new DependencyModel
             {
                 Url = "https://github.com/g-truc/glm/releases/download/0.9.9.8/glm-0.9.9.8.zip",
-                IncludeDir = "glm/",
+                IncludeDir = "glm-0.9.9.8/glm/",
                 LibDir = "",
                 DllDir = "",
                 DebugLibNames = new List<string> { },
