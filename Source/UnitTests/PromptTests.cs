@@ -78,11 +78,11 @@ namespace UnitTests
 
             const string includeDir = "SFML-2.5.1/include/";
             const string libraryDir = "SFML-2.5.1/lib/";
-            const string dllDir = "SFML-2.5.1/dll/";
+            const string dllDir = "";
 
-            includePrompt.Validate(includeDir);
-            libraryPrompt.Validate(libraryDir);
-            dllPrompt.Validate(dllDir);
+            includePrompt.Validate("SFML-2.5.1/include/");
+            libraryPrompt.Validate("SFML-2.5.1/lib");
+            dllPrompt.Validate("");
 
             includePrompt.Populate(dependencyModel);
             libraryPrompt.Populate(dependencyModel);

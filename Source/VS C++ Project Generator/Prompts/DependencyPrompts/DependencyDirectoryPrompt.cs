@@ -45,9 +45,12 @@ namespace VS_CPP_Project_Generator.Prompts
 
         public bool Validate(string userInput)
         {
-            if (ValidationCommon.IsValidFilePath(userInput))
+            if ((_dirType != DependencyDirectoryType.Include && userInput.Length == 0) || ValidationCommon.IsValidFilePath(userInput))
             {
                 _dir = userInput;
+                if (_dir.Length != 0 && _dir.EndsWith('/') == false && _dir.EndsWith('\\') == false)
+                    _dir += '/';
+
                 return true;
             }
 
