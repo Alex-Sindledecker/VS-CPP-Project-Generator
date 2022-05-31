@@ -1,29 +1,40 @@
-﻿using System;
-using VS_CPP_Project_Generator.Models;
+﻿using VS_CPP_Project_Generator.Models;
 using VS_CPP_Project_Generator.Models.ModelGenerators;
 using VS_CPP_Project_Generator.Prompts;
 using VS_CPP_Project_Generator.ProjectAssembly;
+using System.Diagnostics;
 
 namespace VS_CPP_Project_Generator
 {
     class App
     {
+        //Entry Point
         static void Main(string[] args)
         {
+            //Ask user for project information in terminal window
             ProjectModel model = GetProjectModel();
 
-            ProjectBuilder.BuildFromModel(model);
+            //Create the project on the users system
+            ProjectBuilder projectBuilder = new ProjectBuilder("v142", "12.00");
+            projectBuilder.BuildFromModel(model);
+
+            //Open the folder with the newly created project
+            Process.Start("explorer.exe", $"{model.DiskLocation.Replace('/', '\\')}Source\\");
         }
 
+        //Ask user for project information in terminal window
         static ProjectModel GetProjectModel()
         {
+            //Generators
             ProjectModelGenerator projectModelGenerator = new ProjectModelGenerator();
             DependencyModelGenerator dependencyModelGenerator = new DependencyModelGenerator();
 
+            //Adding project prompts
             projectModelGenerator.AddPrompt(new ProjectNamePrompt());
             projectModelGenerator.AddPrompt(new DiskLocationPrompt());
             projectModelGenerator.AddPrompt(new ProjectTypePrompt());
 
+            //Adding dependency prompts
             dependencyModelGenerator.AddPrompt(new DependencyURLPrompt());
             dependencyModelGenerator.AddPrompt(new DependencyDirectoryPrompt(DependencyDirectoryType.Include));
             dependencyModelGenerator.AddPrompt(new DependencyDirectoryPrompt(DependencyDirectoryType.Library));
@@ -31,12 +42,16 @@ namespace VS_CPP_Project_Generator
             dependencyModelGenerator.AddPrompt(new LibraryNamesPrompt(DependencyLibraryConfiguration.Debug));
             dependencyModelGenerator.AddPrompt(new LibraryNamesPrompt(DependencyLibraryConfiguration.Release));
 
+            //Run the project prompts - This gets input from the user to create a project model
             ProjectModel model = projectModelGenerator.RunPrompts();
 
+            //If the user wants to add custom dependencies, they do it through the dependency prompts added above. They can add as many as they want
             ConditionalPrompt conditionalPrompt = new ConditionalPrompt("Add another dependency?");
             PromptCommon.RunPrompt(conditionalPrompt);
+
             while (conditionalPrompt.Result == true)
             {
+                //Run dependencies prompts
                 DependencyModel dependency = dependencyModelGenerator.RunPrompts();
                 model.Dependencies.Add(dependency);
 

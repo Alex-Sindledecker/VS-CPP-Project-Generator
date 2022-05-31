@@ -50,8 +50,6 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
                 string name = _extractions[i];
                 Directory.Move($"{_intDir}{name}/", $"{dest}{name}");
             }
-
-            Directory.Delete(_intDir, true);
         }
     }
 }

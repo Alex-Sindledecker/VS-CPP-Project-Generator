@@ -7,14 +7,27 @@ using VS_CPP_Project_Generator.ProjectAssembly.VS_Project_Types;
 
 namespace VS_CPP_Project_Generator.ProjectAssembly
 {
-    public static class ProjectBuilder
-    { 
-        public static void BuildFromModel(ProjectModel model)
+    public class ProjectBuilder
+    {
+        private string _vcxVersion;
+        private string _slnVersion;
+
+        public ProjectBuilder(string vcxVersion, string slnVersion)
         {
-            VCXProj mainProject = new VCXProj(model, "v142");
-            SLNBuilder slnBuilder = new SLNBuilder(model, "12.00");
+            _vcxVersion = vcxVersion;
+            _slnVersion = slnVersion;
+        }
+
+        public void BuildFromModel(ProjectModel model)
+        {
+            //Setup a vcxproj template for the given project
+            VCXProj mainProject = new VCXProj(model, _vcxVersion);
+            SLNBuilder slnBuilder = new SLNBuilder(model, _slnVersion);
+
+            //Add the project to the sln builder
             slnBuilder.AddProject(mainProject);
 
+            //Creating the project on disk:
             Console.WriteLine("\tBuilding directories...");
             BuildDirectoryStructure(model);
             Console.WriteLine("\tMoving template files...");
@@ -27,7 +40,7 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
             Console.WriteLine("\tFinished!");
         }
 
-        public static void BuildDirectoryStructure(ProjectModel model)
+        public void BuildDirectoryStructure(ProjectModel model)
         {
             Directory.CreateDirectory(model.DiskLocation);                                 //Root directory
             Directory.CreateDirectory($"{model.DiskLocation}/Source/");                    //Source directory
@@ -35,12 +48,14 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
             Directory.CreateDirectory($"{model.DiskLocation}/Source/{model.Name}/");       //Project directory
         }
 
-        public static void MoveTemplateFiles(ProjectModel model)
+        public void MoveTemplateFiles(ProjectModel model)
         {
             if (model.TemplateSourcePath != "")
             {
+                //Get list of files in template directory
                 string[] files = Directory.GetFiles(model.TemplateSourcePath);
 
+                //Copy each template file to the new project directory
                 foreach (string file in files)
                 {
                     string fileName = Path.GetFileName(file);
@@ -50,22 +65,18 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
             }
         }
 
-        public static void CreateSLNFile(ProjectModel model, SLNBuilder builder)
+        public void CreateSLNFile(ProjectModel model, SLNBuilder builder)
         {
-            StreamWriter slnWriter = new StreamWriter($"{model.DiskLocation}/Source/{model.Name}.sln");
-
-            slnWriter.Write(builder.BuildFileContent());
-
-            slnWriter.Close();
+            //Write the sln file
+            using (StreamWriter slnWriter = new StreamWriter($"{model.DiskLocation}/Source/{model.Name}.sln"))
+                slnWriter.Write(builder.BuildFileContent());
         }
 
-        public static void CreateProjFile(ProjectModel model, VSProject project)
+        public void CreateProjFile(ProjectModel model, VSProject project)
         {
-            StreamWriter projectWriter = new StreamWriter($"{model.DiskLocation}/Source/{model.Name}/{model.Name}.{project.GetFileExtension()}");
-
-            projectWriter.Write(project.BuildXML());
-
-            projectWriter.Close();
+            //Write project xml to a file
+            using (StreamWriter projectWriter = new StreamWriter($"{model.DiskLocation}/Source/{model.Name}/{model.Name}.{project.GetFileExtension()}"))
+                projectWriter.Write(project.BuildXML());
         
             //We should create a .vcxproj.user file if the type is a C++ console application
             if (project.GetProjectTypeGUID() == "8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942")
@@ -78,12 +89,14 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
             }
         }
 
-        public static void DownloadAndInstallDependencies(ProjectModel model)
+        public void DownloadAndInstallDependencies(ProjectModel model)
         {
+            //Create intermediate directory (this is where downloaded zip files will be stored and extracted from)
             string intDir = $"{model.DiskLocation}Source/__intermediate_install__/";
-            DependencyManager dependencyManager = new DependencyManager(model, intDir);
-
             Directory.CreateDirectory(intDir);
+
+            //Manages downloading, extracting, and distrubuting dependencies
+            DependencyManager dependencyManager = new DependencyManager(model, intDir);
 
             Console.WriteLine("\tDownloading dependencies...");
             dependencyManager.AquireDependencies();
@@ -91,6 +104,9 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
             dependencyManager.ExtractDependencies();
             Console.WriteLine("\tDistributing dependencies...");
             dependencyManager.DistributeDependencies();
+
+            //Delete intermediate directory
+            Directory.Delete(intDir, true);
         }
     }
 }

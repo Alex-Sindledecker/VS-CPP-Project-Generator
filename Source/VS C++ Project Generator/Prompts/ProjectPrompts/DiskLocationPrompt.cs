@@ -29,6 +29,8 @@ namespace VS_CPP_Project_Generator.Prompts
             if (PromptCommon.IsValidFilePath(userInput))
             {
                 _path = userInput;
+                PromptCommon.EnsureConsistentFilePath(ref _path);
+
                 return true;
             }
 
