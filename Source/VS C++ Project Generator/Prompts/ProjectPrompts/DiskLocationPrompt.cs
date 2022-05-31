@@ -26,7 +26,7 @@ namespace VS_CPP_Project_Generator.Prompts
 
         public bool Validate(string userInput)
         {
-            if (ValidationCommon.IsValidFilePath(userInput))
+            if (PromptCommon.IsValidFilePath(userInput))
             {
                 _path = userInput;
                 return true;
