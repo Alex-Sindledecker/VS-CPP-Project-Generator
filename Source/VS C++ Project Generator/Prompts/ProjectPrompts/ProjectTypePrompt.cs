@@ -15,14 +15,21 @@ namespace VS_CPP_Project_Generator.Prompts
             switch (_choice)
             {
                 case 1:
-                    model.Dependencies.Add(DependencyModelGenerator.GetSFMLModel());
                     model.TemplateSourcePath = $"{_templatePath}SFMLSource/";
+                    model.Dependencies.Add(DependencyModelGenerator.GetSFMLModel());
                     break;
                 case 2:
                     model.TemplateSourcePath = $"{_templatePath}OpenGLSource/";
                     model.Dependencies.Add(DependencyModelGenerator.GetGLADModel());
                     model.Dependencies.Add(DependencyModelGenerator.GetGLFWModel());
                     model.Dependencies.Add(DependencyModelGenerator.GetGLMModel());
+                    break;
+                case 3:
+                    model.TemplateSourcePath = $"{_templatePath}ImGuiSource/";
+                    model.Dependencies.Add(DependencyModelGenerator.GetGLADModel());
+                    model.Dependencies.Add(DependencyModelGenerator.GetGLFWModel());
+                    model.Dependencies.Add(DependencyModelGenerator.GetGLMModel());
+                    model.Dependencies.Add(DependencyModelGenerator.GetImGuiModel());
                     break;
             }
         }
@@ -37,6 +44,7 @@ namespace VS_CPP_Project_Generator.Prompts
             Console.WriteLine("Select your project type from the list below: ");
             Console.WriteLine("1. SFML");
             Console.WriteLine("2. OpenGL");
+            Console.WriteLine("3. OpenGL (with imgui - glfw and opengl backend files (imgui/backends/) must be moved by hand)");
             Console.Write("Enter a number: ");
         }
 
@@ -49,17 +57,8 @@ namespace VS_CPP_Project_Generator.Prompts
         {
             if (int.TryParse(userInput, out _choice))
             {
-                switch (_choice)
-                {
-                    case 1:
-                        //SFML
-                        return true;
-                    case 2:
-                        //OpenGL
-                        return true;
-                    default:
-                        return false;
-                }
+                if (_choice >= 1 && _choice <= 3)
+                    return true;
             }
 
             return false;
