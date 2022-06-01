@@ -41,6 +41,7 @@ namespace VS_CPP_Project_Generator
             dependencyModelGenerator.AddPrompt(new DependencyDirectoryPrompt(DependencyDirectoryType.Dll));
             dependencyModelGenerator.AddPrompt(new LibraryNamesPrompt(DependencyLibraryConfiguration.Debug));
             dependencyModelGenerator.AddPrompt(new LibraryNamesPrompt(DependencyLibraryConfiguration.Release));
+            dependencyModelGenerator.AddPrompt(new IncludeFilesPrompt());
 
             //Run the project prompts - This gets input from the user to create a project model
             ProjectModel model = projectModelGenerator.RunPrompts();
