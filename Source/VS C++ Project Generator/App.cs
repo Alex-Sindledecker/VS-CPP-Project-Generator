@@ -18,13 +18,22 @@ namespace VS_CPP_Project_Generator
             //Create the project on the users system
             ProjectBuilder projectBuilder = new ProjectBuilder("v142", "12.00");
 
-            projectBuilder.DirectoryBuildEvent += () => Console.WriteLine("\tBuilding directories...");
-            projectBuilder.MoveTemplateEvent += () => Console.WriteLine("\tMoving template files...");
-            projectBuilder.ProjFileBuildEvent += () => Console.WriteLine("\tCreating proj files...");
-            projectBuilder.SlnFileBuildEvent += () => Console.WriteLine("\tCreating sln files...");
+            projectBuilder.DirectoryBuildEvent += () => PromptCommon.WriteLine("\tBuilding directories...", ConsoleColor.DarkGreen);
+            projectBuilder.MoveTemplateEvent += () => PromptCommon.WriteLine("\tMoving template files...", ConsoleColor.DarkGreen);
+            projectBuilder.ProjFileBuildEvent += () => PromptCommon.WriteLine("\tCreating proj files...", ConsoleColor.DarkGreen);
+            projectBuilder.SlnFileBuildEvent += () => PromptCommon.WriteLine("\tCreating sln files...", ConsoleColor.DarkGreen);
 
-            DependencyManager.DependencyAqusationEvent += (int current, int total) => Console.WriteLine($"Downloading dependencies... ({current}/{total})");
-            DependencyManager.DependencyAqusationEvent += (int current, int total) => Console.WriteLine($"Extracting dependencies... ({current}/{total})");
+            DependencyManager.DependencyAqusationEvent += (int current, int total) => {
+                PromptCommon.Write("\tDownloading dependencies... [", ConsoleColor.DarkGreen);
+                Console.Write($"{current}/{total}"); 
+                PromptCommon.WriteLine("]", ConsoleColor.DarkGreen);
+            };
+
+            DependencyManager.DependencyExtractingEvent += (int current, int total) => {
+                PromptCommon.Write("\tExtracting dependencies... [", ConsoleColor.DarkGreen);
+                Console.Write($"{current}/{total}"); 
+                PromptCommon.WriteLine("]", ConsoleColor.DarkGreen);
+            };
 
             projectBuilder.BuildFromModel(model);
 

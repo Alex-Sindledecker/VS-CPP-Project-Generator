@@ -17,12 +17,12 @@ namespace VS_CPP_Project_Generator.Prompts
         }
         public void Show()
         {
-            Console.Write($"{_message} (y/n): ");
+            PromptCommon.Write($"{_message} (y/n): ", ConsoleColor.DarkGray);
         }
 
         public void ShowFailedValidationMessage()
         {
-            Console.WriteLine("That is not a valid option! Valid options are 'y' or 'n'...");
+            PromptCommon.WriteLine("That is not a valid option! Valid options are 'y' or 'n'...", ConsoleColor.Red);
         }
 
         public bool Validate(string userInput)

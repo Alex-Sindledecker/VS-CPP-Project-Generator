@@ -21,12 +21,12 @@ namespace VS_CPP_Project_Generator.Prompts
 
         public void Show()
         {
-            Console.WriteLine("Enter a list of additional files to include in the compilation of the project (ex: dep/tools.h, dep/tools.cpp):");
+            PromptCommon.WriteLine("Enter a list of additional files to include in the compilation of the project (ex: dep/tools.h, dep/tools.cpp):", ConsoleColor.DarkGray);
         }
 
         public void ShowFailedValidationMessage()
         {
-            Console.WriteLine("That is not a valid file input!!");
+            PromptCommon.WriteLine("That is not a valid file input!!", ConsoleColor.Red);
         }
 
         public bool Validate(string userInput)

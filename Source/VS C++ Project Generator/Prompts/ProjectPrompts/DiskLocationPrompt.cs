@@ -16,12 +16,12 @@ namespace VS_CPP_Project_Generator.Prompts
 
         public void Show()
         {
-            Console.Write("Project path: ");
+            PromptCommon.Write("Project path: ", ConsoleColor.DarkGray);
         }
 
         public void ShowFailedValidationMessage()
         {
-            Console.WriteLine("That is not a valid filepath!");
+            PromptCommon.WriteLine("That is not a valid filepath!", ConsoleColor.Red);
         }
 
         public bool Validate(string userInput)

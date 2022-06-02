@@ -17,12 +17,12 @@ namespace VS_CPP_Project_Generator.Prompts
 
         public void Show()
         {
-            Console.Write("Dependency url (github repo or zip file): ");
+            PromptCommon.Write("Dependency url (github repo or zip file): ", ConsoleColor.DarkGray);
         }
 
         public void ShowFailedValidationMessage()
         {
-            Console.WriteLine("Invalid url!");
+            PromptCommon.WriteLine("Invalid url!", ConsoleColor.Red);
         }
 
         public bool Validate(string userInput)

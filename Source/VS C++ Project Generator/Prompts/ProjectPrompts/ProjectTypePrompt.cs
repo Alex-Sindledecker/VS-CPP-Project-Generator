@@ -41,16 +41,16 @@ namespace VS_CPP_Project_Generator.Prompts
 
         public void Show()
         {
-            Console.WriteLine("Select your project type from the list below: ");
-            Console.WriteLine("1. SFML");
-            Console.WriteLine("2. OpenGL");
-            Console.WriteLine("3. OpenGL (with imgui - glfw and opengl backend files (imgui/backends/) must be moved by hand)");
-            Console.Write("Enter a number: ");
+            PromptCommon.WriteLine("Select your project type from the list below: ", ConsoleColor.DarkGray);
+            Console.Write("1. "); PromptCommon.WriteLine("SFML", ConsoleColor.DarkYellow);
+            Console.Write("2. "); PromptCommon.WriteLine("OpenGL", ConsoleColor.DarkYellow);
+            Console.Write("3. "); PromptCommon.WriteLine("OpenGL (with imgui)", ConsoleColor.DarkYellow);
+            PromptCommon.Write("Enter a number: ", ConsoleColor.DarkGray);
         }
 
         public void ShowFailedValidationMessage()
         {
-            Console.WriteLine("Invalid selection! Please try again...");
+            PromptCommon.WriteLine("Invalid selection! Please try again...", ConsoleColor.Red);
         }
 
         public bool Validate(string userInput)

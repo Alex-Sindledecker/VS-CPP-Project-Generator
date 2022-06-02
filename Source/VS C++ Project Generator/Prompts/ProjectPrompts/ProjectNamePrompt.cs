@@ -16,12 +16,12 @@ namespace VS_CPP_Project_Generator.Prompts
 
         public void Show()
         {
-            Console.Write("Project Name: ");
+            PromptCommon.Write("Project Name: ", ConsoleColor.DarkGray);
         }
 
         public void ShowFailedValidationMessage()
         {
-            Console.WriteLine("That is not a valid project name!");
+            PromptCommon.WriteLine("That is not a valid project name!", ConsoleColor.DarkRed);
         }
 
         public bool Validate(string userInput)

@@ -34,12 +34,12 @@ namespace VS_CPP_Project_Generator.Prompts
 
         public void Show()
         {
-            Console.Write($"Enter {_config.ToString().ToLower()} library names (ex: sfml-system.lib, sfml-window.lib): ");
+            PromptCommon.Write($"Enter {_config.ToString().ToLower()} library names (ex: sfml-system.lib, sfml-window.lib): ", ConsoleColor.DarkGray);
         }
 
         public void ShowFailedValidationMessage()
         {
-            Console.WriteLine($"{_invalidLibName} is not a valid library!");
+            PromptCommon.WriteLine($"{_invalidLibName} is not a valid library!", ConsoleColor.Red);
         }
 
         public bool Validate(string userInput)

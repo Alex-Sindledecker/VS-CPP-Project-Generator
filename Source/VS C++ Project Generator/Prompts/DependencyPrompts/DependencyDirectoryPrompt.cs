@@ -35,12 +35,12 @@ namespace VS_CPP_Project_Generator.Prompts
 
         public void Show()
         {
-            Console.Write($"{_dirType.ToString()} folder path: ");
+            PromptCommon.Write($"{_dirType.ToString()} folder path: ", ConsoleColor.DarkGray);
         }
 
         public void ShowFailedValidationMessage()
         {
-            Console.WriteLine("Invalid path entered!");
+            PromptCommon.WriteLine("Invalid path entered!", ConsoleColor.Red);
         }
 
         public bool Validate(string userInput)
