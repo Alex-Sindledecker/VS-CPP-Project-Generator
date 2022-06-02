@@ -26,7 +26,7 @@ namespace VS_CPP_Project_Generator.Prompts
 
         public bool Validate(string userInput)
         {
-            if (PromptCommon.IsValidFilePath(userInput))
+            if (userInput.StartsWith("C:/") || userInput.StartsWith("C:\\") && PromptCommon.IsValidFilePath(userInput))
             {
                 _path = userInput;
                 PromptCommon.EnsureConsistentFilePath(ref _path);

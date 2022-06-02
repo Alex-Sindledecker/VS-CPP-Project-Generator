@@ -10,6 +10,12 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
 {
     public class DependencyManager
     {
+        public delegate void DependencyProcFinishedDelegate(int current, int total);
+
+        //TODO: Un-static-ify these events. (They're only static right now because it works and I need to get this done)
+        public static event DependencyProcFinishedDelegate DependencyAqusationEvent;
+        public static event DependencyProcFinishedDelegate DependencyExtractingEvent;
+
         private string _destDir;
         private string _intDir;
         private ProjectModel _model;
@@ -25,8 +31,11 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
 
         public void AquireDependencies()
         {
-            foreach (DependencyModel dependencyModel in _model.Dependencies)
+            for (int i = 0; i < _model.Dependencies.Count; i++)
             {
+                DependencyAqusationEvent?.Invoke(i + 1, _model.Dependencies.Count);
+
+                DependencyModel dependencyModel = _model.Dependencies[i];
                 using (WebClient client = new WebClient())
                 {
                     string name = Path.GetFileNameWithoutExtension(dependencyModel.Url);
@@ -39,7 +48,12 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
                     else
                     {
                         //Github repo
-                        System.Diagnostics.Process.Start("cmd.exe", $"/C git clone --recursive {dependencyModel.Url} {_destDir}{name}");
+                        System.Diagnostics.Process cmdProc = new System.Diagnostics.Process();
+                        cmdProc.StartInfo = new System.Diagnostics.ProcessStartInfo("cmd.exe", $"/c git clone --recursive {dependencyModel.Url} {_destDir}{name}");
+                        cmdProc.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+                        cmdProc.StartInfo.UseShellExecute = true;
+                        cmdProc.Start();
+                        cmdProc.WaitForExit();
                     }
                 }
             }
@@ -47,18 +61,12 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
 
         public void ExtractDependencies()
         {
+            int current = 1;
             foreach (string name in _extractions)
             {
-                ZipFile.ExtractToDirectory($"{_intDir}{name}.zip", $"{_intDir}{name}/");
-            }
-        }
-
-        public void DistributeDependencies()
-        {
-            for (int i = 0; i < _extractions.Count; i++)
-            {
-                string name = _extractions[i];
-                Directory.Move($"{_intDir}{name}/", $"{_destDir}{name}");
+                DependencyExtractingEvent?.Invoke(current, _extractions.Count);
+                ZipFile.ExtractToDirectory($"{_intDir}{name}.zip", $"{_destDir}{name}/");
+                current++;
             }
         }
     }

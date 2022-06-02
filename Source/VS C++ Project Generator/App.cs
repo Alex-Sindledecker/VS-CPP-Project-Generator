@@ -3,6 +3,7 @@ using VS_CPP_Project_Generator.Models.ModelGenerators;
 using VS_CPP_Project_Generator.Prompts;
 using VS_CPP_Project_Generator.ProjectAssembly;
 using System.Diagnostics;
+using System;
 
 namespace VS_CPP_Project_Generator
 {
@@ -16,6 +17,15 @@ namespace VS_CPP_Project_Generator
 
             //Create the project on the users system
             ProjectBuilder projectBuilder = new ProjectBuilder("v142", "12.00");
+
+            projectBuilder.DirectoryBuildEvent += () => Console.WriteLine("\tBuilding directories...");
+            projectBuilder.MoveTemplateEvent += () => Console.WriteLine("\tMoving template files...");
+            projectBuilder.ProjFileBuildEvent += () => Console.WriteLine("\tCreating proj files...");
+            projectBuilder.SlnFileBuildEvent += () => Console.WriteLine("\tCreating sln files...");
+
+            DependencyManager.DependencyAqusationEvent += (int current, int total) => Console.WriteLine($"Downloading dependencies... ({current}/{total})");
+            DependencyManager.DependencyAqusationEvent += (int current, int total) => Console.WriteLine($"Extracting dependencies... ({current}/{total})");
+
             projectBuilder.BuildFromModel(model);
 
             //Open the folder with the newly created project

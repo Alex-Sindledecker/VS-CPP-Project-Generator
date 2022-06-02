@@ -9,6 +9,13 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
 {
     public class ProjectBuilder
     {
+        public delegate void BuildStepDelegate();
+
+        public event BuildStepDelegate DirectoryBuildEvent;
+        public event BuildStepDelegate MoveTemplateEvent;
+        public event BuildStepDelegate ProjFileBuildEvent;
+        public event BuildStepDelegate SlnFileBuildEvent;
+
         private string _vcxVersion;
         private string _slnVersion;
 
@@ -28,20 +35,19 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
             slnBuilder.AddProject(mainProject);
 
             //Creating the project on disk:
-            Console.WriteLine("\tBuilding directories...");
+            
             BuildDirectoryStructure(model);
-            Console.WriteLine("\tMoving template files...");
+            
             MoveTemplateFiles(model);
-            Console.WriteLine("\tCreating proj files...");
             CreateProjFile(model, mainProject);
-            Console.WriteLine("\tCreating sln files...");
             CreateSLNFile(model, slnBuilder);
             DownloadAndInstallDependencies(model);
-            Console.WriteLine("\tFinished!");
         }
 
         public void BuildDirectoryStructure(ProjectModel model)
         {
+            DirectoryBuildEvent?.Invoke();
+
             Directory.CreateDirectory(model.DiskLocation);                                 //Root directory
             Directory.CreateDirectory($"{model.DiskLocation}/Source/");                    //Source directory
             Directory.CreateDirectory($"{model.DiskLocation}/Source/Dependencies/");       //Dependency directory
@@ -52,6 +58,8 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
         {
             if (model.TemplateSourcePath != "")
             {
+                MoveTemplateEvent?.Invoke();
+
                 //Get list of files in template directory
                 string[] files = Directory.GetFiles(model.TemplateSourcePath);
 
@@ -67,6 +75,8 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
 
         public void CreateSLNFile(ProjectModel model, SLNBuilder builder)
         {
+            SlnFileBuildEvent?.Invoke();
+
             //Write the sln file
             using (StreamWriter slnWriter = new StreamWriter($"{model.DiskLocation}/Source/{model.Name}.sln"))
                 slnWriter.Write(builder.BuildFileContent());
@@ -74,6 +84,8 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
 
         public void CreateProjFile(ProjectModel model, VSProject project)
         {
+            ProjFileBuildEvent?.Invoke();
+
             //Write project xml to a file
             using (StreamWriter projectWriter = new StreamWriter($"{model.DiskLocation}/Source/{model.Name}/{model.Name}.{project.GetFileExtension()}"))
                 projectWriter.Write(project.BuildXML());
@@ -95,15 +107,11 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
             string intDir = $"{model.DiskLocation}Source/__intermediate_install__/";
             Directory.CreateDirectory(intDir);
 
-            //Manages downloading, extracting, and distrubuting dependencies
+            //Manages downloading and extracting dependencies
             DependencyManager dependencyManager = new DependencyManager(model, intDir);
 
-            Console.WriteLine("\tDownloading dependencies...");
             dependencyManager.AquireDependencies();
-            Console.WriteLine("\tExtracting dependencies...");
             dependencyManager.ExtractDependencies();
-            Console.WriteLine("\tDistributing dependencies...");
-            dependencyManager.DistributeDependencies();
 
             //Delete intermediate directory
             Directory.Delete(intDir, true);
