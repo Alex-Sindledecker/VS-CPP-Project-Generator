@@ -106,7 +106,16 @@ namespace VS_CPP_Project_Generator.Models.ModelGenerators
                 ReleaseLibNames = new List<string> { },
                 IncludeInProject = new List<string> { "imgui/imgui.cpp", "imgui/imgui_demo.cpp", "imgui/imgui_draw.cpp", "imgui/imgui_tables.cpp", "imgui/imgui_widgets.cpp", 
                     "imgui/imgui_impl_glfw.cpp", "imgui/imgui_impl_opengl3.cpp", "imgui/imconfig.h", "imgui/imgui.h", "imgui/imgui_internal.h", "imgui/imgui_impl_glfw.h",
-                    "imgui/imgui_impl_opengl3.h", "imgui/imgui_impl_opengl3_loader.h" }
+                    "imgui/imgui_impl_opengl3.h", "imgui/imgui_impl_opengl3_loader.h" },
+                PostOp = (string sourceDirectory) =>
+                {
+                    string imguiFolder = $"{sourceDirectory}Dependencies/imgui/";
+                    File.Move($"{imguiFolder}backends/imgui_impl_glfw.h", $"{imguiFolder}imgui_impl_glfw.h");
+                    File.Move($"{imguiFolder}backends/imgui_impl_glfw.cpp", $"{imguiFolder}imgui_impl_glfw.cpp");
+                    File.Move($"{imguiFolder}backends/imgui_impl_opengl3.h", $"{imguiFolder}imgui_impl_opengl3.h");
+                    File.Move($"{imguiFolder}backends/imgui_impl_opengl3.cpp", $"{imguiFolder}imgui_impl_opengl3.cpp");
+                    File.Move($"{imguiFolder}backends/imgui_impl_opengl3_loader.h", $"{imguiFolder}imgui_impl_opengl3_loader.h");
+                }
             };
         }
 

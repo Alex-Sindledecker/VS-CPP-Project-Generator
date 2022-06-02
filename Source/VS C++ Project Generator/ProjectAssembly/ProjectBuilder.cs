@@ -42,6 +42,9 @@ namespace VS_CPP_Project_Generator.ProjectAssembly
             CreateProjFile(model, mainProject);
             CreateSLNFile(model, slnBuilder);
             DownloadAndInstallDependencies(model);
+
+            foreach (DependencyModel dependency in model.Dependencies)
+                dependency.PostOp?.Invoke($"{model.DiskLocation}/Source/");
         }
 
         public void BuildDirectoryStructure(ProjectModel model)
