@@ -22,17 +22,14 @@ using VS_CPP_Project_Generator.ProjectAssembly;
 
 namespace VS_CPP_Project_Generator.ProjectTemplateTypes
 {
-    [ProjectTemplate] //This line is very important!!! Without it, your template won't be detected
-    public class SFMLProjectTemplate
+    [ProjectTemplate] //The class must be marked with the ProjectTemplate attribute to be detected
+    public class SFMLProjectTemplate : IProjectTemplate //Must inheriet from IProjectTemplate
     {
         //This is what will be displayed in the list of options for project templates
-        public static string GetName()
-        {
-            return "SFML";
-        }
+        public string Name => "SFML";
 
         //This is where you would add your dependency models and path to your template source files
-        public static void PopulateProjectModel(ProjectModel model)
+        public void PopulateProjectModel(ProjectModel model)
         {
             model.TemplateSourcePath = $"{PathTools.GetTemplateRootPath()}SFMLSource/";
             model.Dependencies.Add(DependencyModelGenerator.GetSFMLModel());
