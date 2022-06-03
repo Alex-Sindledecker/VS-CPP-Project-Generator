@@ -15,6 +15,13 @@ namespace UnitTests
         private const string _tempDir = "C:/__VS_CPP_Project_Generator_Unit_Tests__/";
         private string _root = $"{_tempDir}TestProj/";
 
+        private ProjectBuilder _builder;
+
+        public ProjectBuilderTests()
+        {
+            _builder = new ProjectBuilder("v142", "12.00");
+        }
+
         [TestMethod]
         public void TestDirectoryStructure()
         {
@@ -26,7 +33,7 @@ namespace UnitTests
                 TemplateSourcePath = ""
             };
 
-            ProjectBuilder.BuildDirectoryStructure(model);
+            _builder.BuildDirectoryStructure(model);
 
             bool rootExists = Directory.Exists(_root);
             bool sourceExists = Directory.Exists($"{_root}Source/");
@@ -50,9 +57,10 @@ namespace UnitTests
                 DiskLocation = $"{_root}",
                 TemplateSourcePath = $"{PathTools.GetTemplateRootPath()}/SFMLSource/"
             };
-            ProjectBuilder.BuildDirectoryStructure(model);
 
-            ProjectBuilder.MoveTemplateFiles(model);
+            _builder.BuildDirectoryStructure(model);
+
+            _builder.MoveTemplateFiles(model);
 
             bool mainInExpectedLocation = File.Exists($"{_root}Source/{model.Name}/main.cpp");
 
@@ -75,8 +83,8 @@ namespace UnitTests
             VCXProj tempProject = new VCXProj(model, "v142");
             builder.AddProject(tempProject);
 
-            ProjectBuilder.BuildDirectoryStructure(model);
-            ProjectBuilder.CreateSLNFile(model, builder);
+            _builder.BuildDirectoryStructure(model);
+            _builder.CreateSLNFile(model, builder);
 
             bool slnCreated = File.Exists($"{_root}Source/{model.Name}.sln");
 
@@ -132,8 +140,8 @@ EndProject
 
             VSProject project = new VCXProj(model, "v142");
 
-            ProjectBuilder.BuildDirectoryStructure(model);
-            ProjectBuilder.CreateProjFile(model, project);
+            _builder.BuildDirectoryStructure(model);
+            _builder.CreateProjFile(model, project);
 
             bool vcxprojCreated = File.Exists($"{_root}Source/{model.Name}/{model.Name}.vcxproj");
 
