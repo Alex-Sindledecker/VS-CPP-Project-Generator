@@ -8,14 +8,11 @@ using VS_CPP_Project_Generator.ProjectAssembly;
 namespace VS_CPP_Project_Generator.ProjectTemplateTypes
 {
     [ProjectTemplate]
-    public class SFMLProjectTemplate
+    public class SFMLProjectTemplate : IProjectTemplate
     {
-        public static string GetName()
-        {
-            return "SFML";
-        }
+        public string Name => "SFML";
 
-        public static void PopulateProjectModel(ProjectModel model)
+        public void PopulateProjectModel(ProjectModel model)
         {
             model.TemplateSourcePath = $"{PathTools.GetTemplateRootPath()}SFMLSource/";
             model.Dependencies.Add(DependencyModelGenerator.GetSFMLModel());

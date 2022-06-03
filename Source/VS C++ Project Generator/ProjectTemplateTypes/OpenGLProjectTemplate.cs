@@ -8,14 +8,11 @@ using VS_CPP_Project_Generator.ProjectAssembly;
 namespace VS_CPP_Project_Generator.ProjectTemplateTypes
 {
     [ProjectTemplate]
-    public class OpenGLProjectTemplate
+    public class OpenGLProjectTemplate : IProjectTemplate
     {
-        public static string GetName()
-        {
-            return "OpenGL";
-        }
+        public string Name => "OpenGL";
 
-        public static void PopulateProjectModel(ProjectModel model)
+        public void PopulateProjectModel(ProjectModel model)
         {
             model.TemplateSourcePath = $"{PathTools.GetTemplateRootPath()}OpenGLSource/";
             model.Dependencies.Add(DependencyModelGenerator.GetGLADModel());

@@ -12,29 +12,27 @@ namespace VS_CPP_Project_Generator.Prompts
     {
         private string _templatePath;
         private int _choice;
-        private List<Type> _projectTypes;
+        private List<IProjectTemplate> _projectTemplates;
 
         public void Populate(ProjectModel model)
         {
-            object[] args = { model };
-            _projectTypes[_choice - 1].GetMethod("PopulateProjectModel").Invoke(null, args);
+            _projectTemplates[_choice - 1].PopulateProjectModel(model);
         }
 
         public ProjectTypePrompt()
         {
             _templatePath = PathTools.GetTemplateRootPath();
-            _projectTypes = new List<Type>();
+            _projectTemplates = new List<IProjectTemplate>();
             foreach (Type t in EnumerateProjectTemplateReflections())
-                _projectTypes.Add(t);
+                _projectTemplates.Add((IProjectTemplate)t.Assembly.CreateInstance(t.FullName));
         }
 
         public void Show()
         {
             PromptCommon.WriteLine("Select your project type from the list below: ", ConsoleColor.DarkGray);
-            for (int i = 0; i < _projectTypes.Count; i++)
+            for (int i = 0; i < _projectTemplates.Count; i++)
             {
-                string projectName = (string)_projectTypes[i].GetMethod("GetName").Invoke(null, null);
-                Console.Write($"{i + 1}. "); PromptCommon.WriteLine(projectName, ConsoleColor.DarkYellow);
+                Console.Write($"{i + 1}. "); PromptCommon.WriteLine(_projectTemplates[i].Name, ConsoleColor.DarkYellow);
             }
             PromptCommon.Write("Enter a number: ", ConsoleColor.DarkGray);
         }
@@ -48,7 +46,7 @@ namespace VS_CPP_Project_Generator.Prompts
         {
             if (int.TryParse(userInput, out _choice))
             {
-                if (_choice >= 1 && _choice <= _projectTypes.Count)
+                if (_choice >= 1 && _choice <= _projectTemplates.Count)
                     return true;
             }
 

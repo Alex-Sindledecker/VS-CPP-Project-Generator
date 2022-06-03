@@ -8,14 +8,11 @@ using VS_CPP_Project_Generator.ProjectAssembly;
 namespace VS_CPP_Project_Generator.ProjectTemplateTypes
 {
     [ProjectTemplate]
-    public class OpenGLImGUIProjectTemplate
+    public class OpenGLImGUIProjectTemplate : IProjectTemplate
     {
-        public static string GetName()
-        {
-            return "OpenGL (with imgui)";
-        }
+        public string Name => "OpenGL (with imgui)";
 
-        public static void PopulateProjectModel(ProjectModel model)
+        public void PopulateProjectModel(ProjectModel model)
         {
             model.TemplateSourcePath = $"{PathTools.GetTemplateRootPath()}ImGuiSource/";
             model.Dependencies.Add(DependencyModelGenerator.GetGLADModel());
