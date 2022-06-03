@@ -7,12 +7,12 @@ Fully functional C++ project generator for Visual Studio. Supports three built i
 * OpenGL (with imgui)
 
 Note: OpenGL templates use GLAD, GLFW, and GLM.
-### Example Usage
+## Example Usage
 In the following example, I create a project called "DemoProject" using the OpenGL template that supports ImGui. I also needed STB image in this example so added a custom dependecny for it.<br/><br/>
 ![Example of what it looks like to setup a project](img/DemoProjectExample.png)<br/><br/>
 Once the project has finished being created, a folder containing the solution file will be automaticly opened.<br/><br/>
 ![Example of the folder that is opened after project creation](img/OpenedFolder.PNG)<br/><br/>
-### Adding Custom Templates
+## Adding Custom Templates
 If you want to add your own template, it is very easy to do so, but will take some modification of the source code. Use these steps to add your custom template:
 1. Download the source code throught GitHub or through the command line via `git clone https://github.com/Alex-Sindledecker/VS-CPP-Project-Generator`
 2. Open the solution file and build the project to ensure everything is set up correctly
