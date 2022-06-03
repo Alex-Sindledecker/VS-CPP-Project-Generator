@@ -1,4 +1,5 @@
 # VS-CPP-Project-Generator
+![Build Passing badge](https://img.shields.io/badge/Build-Passing-brightgreen) ![Platform: Windows](https://img.shields.io/badge/Platform-Windows-lightgrey) ![Tests badge](https://img.shields.io/badge/Tests-----%2F15-red)<br/>
 Fully functional C++ project generator for Visual Studio. Supports three built in project templates and lets you add an unlimited number of external dependencies that can be downloaded from zip files (www.somewebsite/myzipfile.zip) or github repositories. 
 <br/>Built in project templates are:
 * SFML
@@ -22,17 +23,14 @@ using VS_CPP_Project_Generator.ProjectAssembly;
 
 namespace VS_CPP_Project_Generator.ProjectTemplateTypes
 {
-    [ProjectTemplate] //This line is very important!!! Without it, your template won't be detected
-    public class SFMLProjectTemplate
+    [ProjectTemplate] //The class must be marked with the ProjectTemplate attribute to be detected
+    public class SFMLProjectTemplate : IProjectTemplate //Must inheriet from IProjectTemplate
     {
         //This is what will be displayed in the list of options for project templates
-        public static string GetName()
-        {
-            return "SFML";
-        }
+        public string Name => "SFML";
 
         //This is where you would add your dependency models and path to your template source files
-        public static void PopulateProjectModel(ProjectModel model)
+        public void PopulateProjectModel(ProjectModel model)
         {
             model.TemplateSourcePath = $"{PathTools.GetTemplateRootPath()}SFMLSource/";
             model.Dependencies.Add(DependencyModelGenerator.GetSFMLModel());
