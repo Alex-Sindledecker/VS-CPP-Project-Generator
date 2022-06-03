@@ -5,6 +5,8 @@ Fully functional C++ project generator for Visual Studio. Supports three built i
 * SFML
 * OpenGL
 * OpenGL (with imgui)
+
+Note: OpenGL templates use GLAD, GLFW, and GLM.
 ### Example Usage
 In the following example, I create a project called "DemoProject" using the OpenGL template that supports ImGui. I also needed STB image in this example so added a custom dependecny for it.<br/><br/>
 ![Example of what it looks like to setup a project](img/DemoProjectExample.png)<br/><br/>
