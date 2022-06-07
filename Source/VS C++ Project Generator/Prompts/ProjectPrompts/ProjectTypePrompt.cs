@@ -24,7 +24,7 @@ namespace VS_CPP_Project_Generator.Prompts
             _templatePath = PathTools.GetTemplateRootPath();
             _projectTemplates = new List<IProjectTemplate>();
             foreach (Type t in EnumerateProjectTemplateReflections())
-                _projectTemplates.Add((IProjectTemplate)t.Assembly.CreateInstance(t.FullName));
+                _projectTemplates.Add((IProjectTemplate)Activator.CreateInstance(t));
         }
 
         public void Show()
