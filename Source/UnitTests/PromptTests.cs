@@ -13,7 +13,7 @@ namespace UnitTests
         public void URLValidationTest()
         {
             const string testUrl1 = "https://github.com/Alex-Sindledecker/VS-CPP-Project-Generator/tree/development";
-            const string testUrl2 = "https://github.com/canton7/Stylet";
+            const string testUrl2 = "https://github.com/canton7/Stylet/";
             const string testUrl3 = "https://github.com/Alex-Sindledecker/VS-CPP-Project-Generator";
             const string testUrl4 = "https://www.w3schools.com/cs/cs_user_input.php";
             const string testUrl5 = "https://github.com/SFML/SFML/releases/download/2.5.1/SFML-2.5.1-windows-vc15-64-bit.zip";
@@ -148,7 +148,26 @@ namespace UnitTests
 
             CollectionAssert.AreEqual(dependencyModel.DebugLibNames, expectedDebugResult, "Dependency model debug lib names not correctly populated");
             CollectionAssert.AreEqual(dependencyModel.ReleaseLibNames, expectedReleaseResult, "Dependency model release lib names not correctly populated");
-            
+        }
+
+        [TestMethod]
+        public void TestAdditionalIncludeFiles()
+        {
+            DependencyModel dependencyModel = new DependencyModel();
+
+            IncludeFilesPrompt includeFilesPrompt = new IncludeFilesPrompt();
+
+            bool test1 = includeFilesPrompt.Validate("");
+            bool test2 = includeFilesPrompt.Validate("file1.cpp");
+            bool test3 = includeFilesPrompt.Validate("path/file2.cpp");
+            bool test4 = includeFilesPrompt.Validate("file3");
+            bool test5 = includeFilesPrompt.Validate("path/file4");
+
+            Assert.AreEqual(test1, true, "Include prompts should allow empty field!");
+            Assert.AreEqual(test2, true, "Include prompt not allowing \"file1.cpp\"");
+            Assert.AreEqual(test3, true, "Include prompt not allowing \"path/file2.cpp\"");
+            Assert.AreEqual(test4, false, "Include prompt allowing \"file3\"");
+            Assert.AreEqual(test5, false, "Include prompt allowing \"path/file4\"");
         }
     }
 }

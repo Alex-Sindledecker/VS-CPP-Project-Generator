@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using VS_CPP_Project_Generator.Models;
 
 namespace VS_CPP_Project_Generator.Prompts
 {
-    class IncludeFilesPrompt : IDependencyPrompt
+    public class IncludeFilesPrompt : IDependencyPrompt
     {
         private List<string> _files;
 
@@ -21,7 +22,7 @@ namespace VS_CPP_Project_Generator.Prompts
 
         public void Show()
         {
-            PromptCommon.WriteLine("Enter a list of additional files to include in the compilation of the project (ex: dep/tools.h, dep/tools.cpp):", ConsoleColor.DarkGray);
+            PromptCommon.WriteLine("Enter a list of any additional files to include in the compilation of the project (ex: dep/tools.h, dep/tools.cpp):", ConsoleColor.DarkGray);
         }
 
         public void ShowFailedValidationMessage()
@@ -31,9 +32,11 @@ namespace VS_CPP_Project_Generator.Prompts
 
         public bool Validate(string userInput)
         {
+            if (userInput.Length == 0)
+                return true;
             foreach (string file in userInput.Split(','))
             {
-                if (PromptCommon.IsValidFilePath(file))
+                if (PromptCommon.IsValidFilePath(file) && Path.GetExtension(file) != "")
                     _files.Add(file);
                 else
                 {
