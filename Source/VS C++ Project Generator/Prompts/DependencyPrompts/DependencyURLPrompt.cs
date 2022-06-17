@@ -30,7 +30,7 @@ namespace VS_CPP_Project_Generator.Prompts
             if (Uri.IsWellFormedUriString(userInput, UriKind.Absolute))
             {
                 Regex zipExtensionRegex = new Regex(@"^.*\.(zip)$");
-                Regex githubURLRegex = new Regex(@"https:\/\/github.com\/[a-zA-Z|\-|0-9]+\/[a-zA-Z|\-|0-9]+$");
+                Regex githubURLRegex = new Regex(@"https:\/\/github.com\/[a-zA-Z|\-|0-9]+\/[a-zA-Z|\-|0-9]+[/]?$");
                 if (zipExtensionRegex.IsMatch(userInput) == true || githubURLRegex.IsMatch(userInput))
                 {
                     _url = userInput;
